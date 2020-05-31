@@ -17,17 +17,19 @@ class Artiacts:
 
     def __load_artifacts_helper(self, link, result=[]):
         if link.endswith("1"):
+            # end of recursion reached last page
             self.artifacts = result
         else:
+            # first page or new pages in available
             r = requests.get(self.url)
-            result.append([artifact for artifact in r.json()])
-            print(r.headers)
-            # link = r.headers["link"].split(";")[0].replace("<","").replace(">", "")
-            # self.__load_artifacts_helper(link, result)
-        
-
-
-    '<https://api.github.com/repositories/122235734/actions/artifacts?page=2>; rel="next", <https://api.github.com/repositories/122235734/actions/artifacts?page=2>; rel="last"'
+            if r.status_code == 200:    
+                result.append([artifact for artifact in r.json()])
+                link = r.headers["link"].split(";")[0].replace("<","").replace(">", "")
+                self.__load_artifacts_helper(link, result)
+            else:
+                # can't load more artifacts api denied
+                print("API returned {}".format(r.status_code))
+                return result
 
 
     def get_artifacts(self):
@@ -50,8 +52,11 @@ class Artiacts:
                     f.write(chunk)
         return local_filename
 
-def main():    
-    a = Artiacts(api_url, "Grotax", "56463ad60ae645c4cd34dc4d16811ec96ecb4fc2")
+def main():
+    secret = None
+    with open("secrets", "r") as f:
+        secret = f.readline()
+    a = Artiacts(api_url, "Grotax", secret)
 
     a.load_artifacts()
 
