@@ -1,11 +1,9 @@
 #! python3
 import requests
-from requests.auth import HTTPBasicAuth 
+from requests.auth import HTTPBasicAuth
 
 
-api_url = "https://api.github.com/repos/ffsh/site/actions/artifacts"
-
-class Artiacts:
+class API:
     def __init__(self, url, username, password):
         self.url = url
         self.username = username
@@ -22,7 +20,7 @@ class Artiacts:
         else:
             # first page or new pages in available
             r = requests.get(self.url)
-            if r.status_code == 200:    
+            if r.status_code == 200:
                 result.append([artifact for artifact in r.json()])
                 link = r.headers["link"].split(";")[0].replace("<","").replace(">", "")
                 self.__load_artifacts_helper(link, result)
@@ -45,18 +43,16 @@ class Artiacts:
         with requests.get(url, auth=HTTPBasicAuth(self.username, self.password), stream=True) as r:
             r.raise_for_status()
             with open(local_filename, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=8192): 
-                    # If you have chunk encoded response uncomment if
-                    # and set chunk_size parameter to None.
-                    #if chunk: 
+                for chunk in r.iter_content(chunk_size=8192):
                     f.write(chunk)
         return local_filename
+
 
 def main():
     secret = None
     with open("secrets", "r") as f:
         secret = f.readline()
-    a = Artiacts(api_url, "Grotax", secret)
+    a = Artiact("https://api.github.com/repos/ffsh/site/actions/artifacts", "Grotax", secret)
 
     a.load_artifacts()
 
