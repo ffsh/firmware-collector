@@ -1,0 +1,33 @@
+HTTP/1.1 302 Found
+Date: Sun, 14 Jun 2020 08:54:08 GMT
+Content-Type: text/html;charset=utf-8
+Content-Length: 0
+Server: GitHub.com
+Status: 302 Found
+X-RateLimit-Limit: 5000
+X-RateLimit-Remaining: 4995
+X-RateLimit-Reset: 1592128234
+Location: https://pipelines.actions.githubusercontent.com/3aMLP3aSu3EqrZ5r6NuXSAq9nVkZLgF8MsoAtYEdmmdTYoTuVN/_apis/pipelines/1/runs/17/signedartifactscontent?artifactName=ath79-generic_logs&urlExpires=2020-06-14T08%3A55%3A08.4438693Z&urlSigningMethod=HMACV1&urlSignature=mEy12pMzhoC1AVXhR%2FQnvKxVKpYUq7wC5cWzvd%2BUC3k%3D
+Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, Deprecation, Sunset
+Access-Control-Allow-Origin: *
+Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+X-Frame-Options: deny
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'none'
+Vary: Accept-Encoding, Accept, X-Requested-With
+Vary: Accept-Encoding
+X-GitHub-Request-Id: 1B69:42970:47D64AB:553BDF3:5EE5E5B0
+
+HTTP/2 404 
+content-length: 0
+strict-transport-security: max-age=2592000
+x-tfs-processid: 4d3907b0-e795-4830-849c-7f5b82602c8b
+activityid: 2cff7ec6-dfc6-43f2-bd78-e5c5ddeca58b
+x-tfs-session: 2cff7ec6-dfc6-43f2-bd78-e5c5ddeca58b
+x-vss-e2eid: 2cff7ec6-dfc6-43f2-bd78-e5c5ddeca58b
+x-vss-senderdeploymentid: d624195d-30e0-1768-06a5-b10a7879c7db
+x-msedge-ref: Ref A: 7DA55776D9B343D6AA685B12A6933038 Ref B: FRAEDGE0918 Ref C: 2020-06-14T08:54:08Z
+date: Sun, 14 Jun 2020 08:54:09 GMT
+

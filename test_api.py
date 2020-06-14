@@ -10,6 +10,6 @@ t_api = API("https://api.github.com/repos/ffsh/site/actions/artifacts", "Grotax"
 #https://api.github.com/repos/ffsh/site/actions/artifacts
 t_api.load_artifacts()
 print(t_api.get_artifacts())
-print(t_api.get_artifact(8445234))
+print(t_api.get_artifact(8445234).name)
 
 

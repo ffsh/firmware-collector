@@ -18,7 +18,8 @@ class Repository:
                 "archive_download_url": artifact.archive_download_url,
                 "expired": artifact.expired,
                 "created_at": artifact.created_at,
-                "updated_at": artifact.updated_at
+                "updated_at": artifact.updated_at,
+                "stored": artifact.stored
             },)
             return True
         else:
@@ -34,7 +35,8 @@ class Repository:
             "archive_download_url": artifact.archive_download_url,
             "expired": artifact.expired,
             "created_at": artifact.created_at,
-            "updated_at": artifact.updated_at
+            "updated_at": artifact.updated_at,
+            "stored": artifact.stored
             },
             entry.id == artifact_id
         )

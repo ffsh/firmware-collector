@@ -13,10 +13,11 @@ some_artifact = {
     "created_at": "2020-05-29T20:10:24Z",
     "updated_at": "2020-05-29T20:10:36Z"
 }
+some_artifact["stored"] = False
 
 with open("secrets", "r") as f:
     secret = f.readline()
 
 art = Artifact(some_artifact)
-art.download("Grotax", secret, "/home/grotax/git/firmware-collector/downloads")
+
 print(dir(art))

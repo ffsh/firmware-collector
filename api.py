@@ -13,7 +13,6 @@ class API:
 
     def load_artifacts(self):
         self.__load_artifacts_helper(self.url)
-        self.artifacts = [item for sublist in self.artifacts for item in sublist]
 
     def __load_artifacts_helper(self, link, result=[]):
         if link == "":
@@ -24,7 +23,9 @@ class API:
             # first page or new pages in available
             r = requests.get(link, auth=HTTPBasicAuth(self.username, self.token))
             if r.status_code == 200:
-                result.append([Artifact(a) for a in r.json()["artifacts"]])
+                for artifact in r.json()["artifacts"]:
+                    artifact["stored"] = False
+                    result.append(Artifact(artifact))
                 links = requests.utils.parse_header_links(r.headers["link"].rstrip(">").replace(">,<", ",<"))
                 for link in links:
                     if link["rel"] == "next":
@@ -39,19 +40,18 @@ class API:
         return [artifact.id for artifact in self.artifacts]
 
     def get_artifact(self, id):
-        #print(self.artifacts)
         for artifact in self.artifacts:
             if artifact.id == id:
                 return artifact
-        #return next(artifact for artifact in self.artifacts if artifact["id"] == id)
 
-    def download_artifact(self, id):
-        url = self.get_artifact(id).archive_download_url
-        local_filename = "{}.zip"
+    def download_artifact(self, artifact, download_dir):
+        url = artifact.archive_download_url
+        local_filename = "{}{}.zip".format(download_dir, artifact.name)
 
         with requests.get(url, auth=HTTPBasicAuth(self.username, self.token), stream=True) as r:
             r.raise_for_status()
             with open(local_filename, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    f.write(chunk)
+                for chunk in r.iter_content(chunk_size=None):
+                    if(chunk):
+                        f.write(chunk)
         return local_filename
