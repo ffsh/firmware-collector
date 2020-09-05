@@ -4,7 +4,7 @@ from repository import Repository
 
 db_path = "/home/grotax/git/firmware-collector/db.json"
 
-with open("secrets", "r") as f:
+with open("secret", "r") as f:
     secret = f.readline()
 
 t_api = API("https://api.github.com/repos/ffsh/site/actions/artifacts", "Grotax", secret)
@@ -26,8 +26,17 @@ for artifact_id in current_ids:
 db_ids = t_repository.read_all_id()
 #print(db_ids)
 
-result = t_repository.read(465456786)
+#result = t_repository.read(465456786)
 
-#for shitid in db_ids:
-#    if shitid in db_ids:
-#        print("Saved artifact to DB: {}".format(shitid))
+def dowload_all(db_ids):
+    for a_id in db_ids:
+        artifact = t_repository.read(a_id)
+        if artifact.name.endswith("output"):
+            print(t_repository.read(a_id).name)
+        if not artifact.stored:
+            t_api.download_artifact(artifact, "/home/grotax/git/firmware-collector/download_store")
+            artifact.stored = True
+            t_repository.update(artifact.id, artifact)
+
+#dowload_all(db_ids)
+

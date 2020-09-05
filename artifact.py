@@ -14,6 +14,7 @@ class Artifact:
     expired:              if true its no longer available
     created_at:           created date Y-M-DTh:m:sZ
     updated_at:           updated date Y-M-DTh:m:sZ
+    stored:               True if artifact was downloaded
     """
     def __init__(self, artifact):
         self.id = artifact["id"]

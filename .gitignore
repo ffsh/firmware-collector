@@ -1,6 +1,7 @@
 secret
 secrets
 artifact_store
+download_store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
