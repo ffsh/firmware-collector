@@ -1,7 +1,3 @@
-import requests
-from requests.auth import HTTPBasicAuth
-
-
 class Artifact:
     """Reflects a GitHub Artifact
 

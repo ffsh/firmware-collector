@@ -55,7 +55,7 @@ class API:
     def download_artifact(self, artifact, download_dir):
         url = artifact.archive_download_url
         local_filename = os.path.join(download_dir, artifact.name + ".zip")
-        
+
 
         with requests.get(url, auth=HTTPBasicAuth(self.username, self.token), stream=True) as r:
             r.raise_for_status()
