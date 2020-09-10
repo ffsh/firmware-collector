@@ -4,6 +4,7 @@ import json
 from progress.bar import Bar
 from firmware_collector.api import API
 from firmware_collector.repository import Repository
+from firmware_collector.storage import Storage
 
 
 class Collector():
@@ -40,12 +41,20 @@ class Collector():
         for artifact in download_list:
             bar.next()
             try:
-                api.download_artifact(artifact, "/home/grotax/git/firmware-collector/download_store")
+                api.download_artifact(artifact, self.config["download_path"])
                 artifact.stored = True
                 repository.update(artifact.id, artifact)
             except Exception as exception:
                 print("Download failed {}".format(exception))
         bar.finish()
+
+    def store(self):
+        """
+        stores the images from the download dir in a proper way
+        """
+        repository = Repository(self.config["db_path"])
+        store = Storage(self.config["storage_path"])
+
 
 
 if __name__ == "__main__":
