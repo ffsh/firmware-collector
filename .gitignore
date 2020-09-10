@@ -2,6 +2,8 @@ secret
 secrets
 artifact_store
 download_store
+config.json
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

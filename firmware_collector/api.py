@@ -1,7 +1,7 @@
 #! python3
 import requests
 from requests.auth import HTTPBasicAuth
-from artifact import Artifact
+from firmware_collector.artifact import Artifact
 import os
 
 
@@ -13,6 +13,9 @@ class API:
         self.artifacts = []
 
     def load_artifacts(self):
+        """
+        loads all the artifacts from GitHub
+        """
         self.__load_artifacts_helper(self.url)
 
     def __load_artifacts_helper(self, link, result=[]):
@@ -44,8 +47,12 @@ class API:
                 print("API returned {}".format(r.status_code))
                 self.artifacts = result
 
-    def get_artifacts(self):
-        return [artifact.id for artifact in self.artifacts]
+    def get_artifact_ids(self):
+        """
+        returns all artifacts, generator
+        """
+        for artifact in self.artifacts:
+            yield artifact.id
 
     def get_artifact(self, id):
         for artifact in self.artifacts:
@@ -55,7 +62,6 @@ class API:
     def download_artifact(self, artifact, download_dir):
         url = artifact.archive_download_url
         local_filename = os.path.join(download_dir, artifact.name + ".zip")
-
 
         with requests.get(url, auth=HTTPBasicAuth(self.username, self.token), stream=True) as r:
             r.raise_for_status()

@@ -9,6 +9,8 @@ class TestArtifact(unittest.TestCase):
         super().__init__()
 
     def test_load_artifacts(self):
+        # api.load_artifacts()
+        pass
 
 
 if __name__ == '__main__':

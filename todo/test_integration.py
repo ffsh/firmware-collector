@@ -1,20 +1,24 @@
 #! python3
-from api import API
-from repository import Repository
+from firmware_collector.api import API
+from firmware_collector.repository import Repository
 
 db_path = "/home/grotax/git/firmware-collector/db.json"
 
-with open("secret", "r") as f:
-    secret = f.readline()
 
-t_api = API("https://api.github.com/repos/ffsh/site/actions/artifacts", "Grotax", secret)
-t_repository = Repository(db_path)
+def step1_runAPI():
+    with open("secret", "r") as f:
+        secret = f.readline()
+    t_api = API("https://api.github.com/repos/ffsh/site/actions/artifacts", "Grotax", secret)
+    t_api.load_artifacts()
+    return t_api.get_artifacts()
 
-t_api.load_artifacts()
 
-current_ids = t_api.get_artifacts()
+def step2_loadDB():
+    t_repository = Repository(db_path)
+    return t_repository.read_all_id()
 
-db_ids = t_repository.read_all_id()
+def step3_updateDB():
+
 
 
 

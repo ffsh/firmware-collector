@@ -1,6 +1,6 @@
 #! python3
 from tinydb import TinyDB, Query
-from artifact import Artifact
+from firmware_collector.artifact import Artifact
 
 
 class Repository:
