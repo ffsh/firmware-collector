@@ -66,9 +66,9 @@ class Collector():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='This is the firmware-collector cli')
     parse_group = parser.add_mutually_exclusive_group()
-    parse_group.add_argument('-update', action="store_true", default=False)
-    parse_group.add_argument('-download', action="store_true", default=False)
-    parse_group.add_argument('-store', action="store_true", default=False)
+    parse_group.add_argument('--update', action="store_true", default=False)
+    parse_group.add_argument('--download', action="store_true", default=False)
+    parse_group.add_argument('--store', action="store_true", default=False)
 
     args = parser.parse_args()
 
