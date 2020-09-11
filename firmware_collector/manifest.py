@@ -40,9 +40,9 @@ class Manifest():
         pattern = re.compile(r'BRANCH=(\w+)\nDATE=(.*)\nPRIORITY=(\d)')
         header = pattern.match(header)
 
-        self.branch = header[1]
-        self.date = header[2]
-        self.priority = header[3]
+        self.branch = header.group(1)
+        self.date = header.group(2)
+        self.priority = header.group(3)
         self.body = body.lstrip("\n").rstrip("\n")
         self.signature = signature.strip("\n")
 
