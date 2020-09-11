@@ -28,24 +28,33 @@ class Manifest():
         loads the manifest from file
         """
         with open(file, "r") as import_file:
-            imported = import_file.readlines()
-        # imported needs to be parsed
-        pattern = re.compile(r'BRANCH=(\w+)\nDATE=(.*)\nPRIORITY(=\d)\n\n(.*\n*)*(-{3}|)(.+)*')
-        matched = re.match(pattern, imported)
-        self.branch = matched[1]
-        self.date = matched[2]
-        self.priority = matched[3]
-        self.body = matched[4]
-        self.signature = matched[5]
+            imported = import_file.read()
+
+        result = imported.split("\n\n")
+        header = result[0]
+        body = result[1]
+
+        if "---" in body:
+            body, signature = body.split("---")
+
+        pattern = re.compile(r'BRANCH=(\w+)\nDATE=(.*)\nPRIORITY=(\d)')
+        header = pattern.match(header)
+
+        self.branch = header[1]
+        self.date = header[2]
+        self.priority = header[3]
+        self.body = body
+        self.signature = signature
+
 
     def export(self, file):
         """
         exports the manifest to a file
         """
-        with open(file, "rw") as export_file:
-            export_file.write("BRANCH={}\n".format(self.branch))
-            export_file.write("DATE={}\n".format(self.date))
-            export_file.write("PRIORITY={}\n\n".format(self.priority))
-            export_file.write("{}\n".format(self.body))
-            export_file.write("---\n")
-            export_file.write("{}".format(self.signature))
+        with open(file, "w") as export_file:
+            print("BRANCH={branch}\nDATE={date}\nPRIORITY={priority}\n\n\n{body}\n---\n{signature}".format(
+                     branch=self.branch,
+                     date=self.date,
+                     priority=self.priority,
+                     body=self.body,
+                     signature=self.signature), file=export_file)
