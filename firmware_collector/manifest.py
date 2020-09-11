@@ -43,8 +43,8 @@ class Manifest():
         self.branch = header[1]
         self.date = header[2]
         self.priority = header[3]
-        self.body = body
-        self.signature = signature
+        self.body = body.lstrip("\n").rstrip("\n")
+        self.signature = signature.strip("\n")
 
 
     def export(self, file):
