@@ -1,6 +1,6 @@
 #! python3
 import unittest
-from firmware_collector import artifact
+from firmware_collector.artifact import Artifact
 
 
 class TestArtifact(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestArtifact(unittest.TestCase):
          }
         a_artifact["stored"] = False
 
-        b_artifact = artifact.Artifact(a_artifact)
+        b_artifact = Artifact(a_artifact)
         self.assertEqual(a_artifact["id"], b_artifact.id)
         self.assertEqual(a_artifact["node_id"], b_artifact.node_id)
         self.assertEqual(a_artifact["name"], b_artifact.name)

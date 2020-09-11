@@ -1,5 +1,8 @@
 #! python3
 
+import re
+
+
 class Manifest():
     def __init__(self, branch=None, date=None, priority=None, body=None, signature=None):
         self.branch = branch
@@ -24,11 +27,25 @@ class Manifest():
         """
         loads the manifest from file
         """
-        print("lel")
+        with open(file, "r") as import_file:
+            imported = import_file.readlines()
+        # imported needs to be parsed
+        pattern = re.compile(r'BRANCH=(\w+)\nDATE=(.*)\nPRIORITY(=\d)\n\n(.*\n*)*(-{3}|)(.+)*')
+        matched = re.match(pattern, imported)
+        self.branch = matched[1]
+        self.date = matched[2]
+        self.priority = matched[3]
+        self.body = matched[4]
+        self.signature = matched[5]
 
     def export(self, file):
         """
         exports the manifest to a file
         """
-        # create file
-        # write to file
+        with open(file, "rw") as export_file:
+            export_file.write("BRANCH={}\n".format(self.branch))
+            export_file.write("DATE={}\n".format(self.date))
+            export_file.write("PRIORITY={}\n\n".format(self.priority))
+            export_file.write("{}\n".format(self.body))
+            export_file.write("---\n")
+            export_file.write("{}".format(self.signature))
