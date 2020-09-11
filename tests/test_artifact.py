@@ -16,7 +16,7 @@ class TestArtifact(unittest.TestCase):
             "expired": "false",
             "created_at": "2020-05-29T20:10:24Z",
             "updated_at": "2020-05-29T20:10:36Z"
-         }
+        }
         a_artifact["stored"] = False
 
         b_artifact = Artifact(a_artifact)

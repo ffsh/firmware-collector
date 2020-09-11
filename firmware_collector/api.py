@@ -27,7 +27,7 @@ class API:
             next_link = ""  # Reset
             # first page or new pages in available
             r = requests.get(link, auth=HTTPBasicAuth(self.username, self.token))
-            if r.status_code == 200 and halt == False:
+            if r.status_code == 200 and halt is False:
                 for artifact in r.json()["artifacts"]:
                     artifact["stored"] = False
                     result.append(Artifact(artifact))

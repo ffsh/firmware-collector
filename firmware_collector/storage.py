@@ -24,7 +24,6 @@ class Storage:
         with zipfile.ZipFile(artifact_file, 'r') as zip_ref:
             zip_ref.extractall(release_dir)
 
-
         print("Gluon Version:" + match_the_catch[1])
         print("FFSH Version:" + match_the_catch[2])
 

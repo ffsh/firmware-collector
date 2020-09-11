@@ -46,15 +46,14 @@ class Manifest():
         self.body = body.lstrip("\n").rstrip("\n")
         self.signature = signature.strip("\n")
 
-
     def export(self, file):
         """
         exports the manifest to a file
         """
         with open(file, "w") as export_file:
             print("BRANCH={branch}\nDATE={date}\nPRIORITY={priority}\n\n\n{body}\n---\n{signature}".format(
-                     branch=self.branch,
-                     date=self.date,
-                     priority=self.priority,
-                     body=self.body,
-                     signature=self.signature), file=export_file)
+                branch=self.branch,
+                date=self.date,
+                priority=self.priority,
+                body=self.body,
+                signature=self.signature), file=export_file)

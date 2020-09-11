@@ -37,7 +37,7 @@ class Repository:
             "created_at": artifact.created_at,
             "updated_at": artifact.updated_at,
             "stored": artifact.stored
-            },
+        },
             entry.id == artifact_id
         )
 
