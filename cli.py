@@ -1,6 +1,7 @@
 #! python3
 import argparse
 import json
+import os
 from progress.bar import Bar
 from firmware_collector.api import API
 from firmware_collector.repository import Repository
@@ -52,8 +53,13 @@ class Collector():
         """
         stores the images from the download dir in a proper way
         """
-        repository = Repository(self.config["db_path"])
-        store = Storage(self.config["storage_path"])
+        # repository = Repository(self.config["db_path"])
+        storage = Storage(self.config["firmware_path"])
+
+        for artifact in os.scandir(self.config["download_path"]):
+            print("we want to do stuff with " + artifact.path)
+            storage.save(artifact.path)
+            print()
 
 
 
@@ -62,6 +68,7 @@ if __name__ == "__main__":
     parse_group = parser.add_mutually_exclusive_group()
     parse_group.add_argument('-update', action="store_true", default=False)
     parse_group.add_argument('-download', action="store_true", default=False)
+    parse_group.add_argument('-store', action="store_true", default=False)
 
     args = parser.parse_args()
 
@@ -69,5 +76,7 @@ if __name__ == "__main__":
 
     if args.update:
         collector.update()
-    if args.download:
+    elif args.download:
         collector.download()
+    elif args.store:
+        collector.store()
