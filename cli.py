@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    collector = Collector("/home/grotax/git/firmware-collector/config.json")
+    collector = Collector("config.json")
 
     if args.update:
         collector.update()
