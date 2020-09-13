@@ -26,16 +26,19 @@ class Storage:
         with zipfile.ZipFile(artifact_file, 'r') as zip_ref:
             for file in zip_ref.infolist():
                 if file.filename.endswith("master.manifest"):
+                    file.filename = Path(file.filename).name
 
-                    zip_ref.extract(file, release_dir / ("temp"))
                     manifest_path = release_dir / "sysupgrade" / "master.manifest"
                     if manifest_path.exists():
+                        zip_ref.extract(file, release_dir / "temp")
                         manifest = Manifest()
                         manifest.load(manifest_path)
                         manifest_part = Manifest()
                         manifest_part.load(release_dir / "temp" / "master.manifest")
                         manifest.merge(manifest_part)
                         manifest.export(manifest_path)
+                    else:
+                        zip_ref.extract(file, manifest_path.parent)
 
                 if file.filename.startswith('images/factory/'):
                     file.filename = Path(file.filename).name

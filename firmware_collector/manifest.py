@@ -36,6 +36,8 @@ class Manifest():
 
         if "---" in body:
             body, signature = body.split("---")
+        else:
+            signature = ""
 
         pattern = re.compile(r'BRANCH=(\w+)\nDATE=(.*)\nPRIORITY=(\d)')
         header = pattern.match(header)
