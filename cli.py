@@ -64,8 +64,6 @@ class Collector():
         bar.finish()
 
 
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='This is the firmware-collector cli')
     parse_group = parser.add_mutually_exclusive_group()

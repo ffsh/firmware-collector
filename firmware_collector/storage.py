@@ -2,7 +2,6 @@
 
 import re
 import zipfile
-import shutil
 from pathlib import Path
 from firmware_collector.manifest import Manifest
 
@@ -55,4 +54,3 @@ class Storage:
 
     def delete(self, artifact_file):
         return True
-
