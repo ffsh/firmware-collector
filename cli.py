@@ -55,11 +55,14 @@ class Collector():
         """
         # repository = Repository(self.config["db_path"])
         storage = Storage(self.config["firmware_path"])
+        file_list = [file for file in os.scandir(self.config["download_path"])]
 
-        for artifact in os.scandir(self.config["download_path"]):
-            print("we want to do stuff with " + artifact.path)
+        bar = Bar('Processing', max=len(file_list))
+        for artifact in file_list:
+            bar.next()
             storage.save(artifact.path)
-            print()
+        bar.finish()
+
 
 
 

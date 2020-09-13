@@ -3,8 +3,7 @@
 import os
 import re
 import zipfile
-import shutil
-
+from firmware_collector.manifest import Manifest
 
 class Storage:
     def __init__(self, storage_path):
@@ -15,31 +14,36 @@ class Storage:
 
     def save(self, artifact_file):
 
-        if not os.path.isfile(artifact_file):
-            print("file " + artifact_file)
-            return None
+        #if not os.path.isfile(artifact_file):
+            #return None
 
-        print("basename: " + os.path.basename(artifact_file))
-        match_the_catch = re.match(r'(\d{4}.\d.\d).(\d)_(.*)+_(\w+).zip', os.path.basename(artifact_file))
-        print(match_the_catch.group(0))
-        release_name = "{}.{}".format(match_the_catch.group(1), match_the_catch.group(2))
+        filename = os.path.basename(artifact_file)
+        filename_parsed = re.match(r'(\d{4}.\d.\d).(\d)_(.*)+_(\w+).zip', filename)
+        print(filename_parsed.group(0))
+        release_name = "{}.{}".format(filename_parsed.group(1), filename_parsed.group(2))
         release_dir = "{}/{}".format(self.storage_path, release_name)
 
         if not os.path.isdir(release_dir):
             os.mkdir(release_dir)
 
         with zipfile.ZipFile(artifact_file, 'r') as zip_ref:
-            zip_ref.extractall(release_dir)
+            for file in zip_ref.namelist():
+                if file.endswith("master.manifest"):
+                    zip_ref.extract(file, "{}/temp".format(release_dir))
+                    if os.path.isfile("{}/sysupgrade/master.manifest".format(release_dir)):
+                        manifest = Manifest()
+                        manifest.load("{}/sysupgrade/master.manifest".format(release_dir))
+                        manifest_part = Manifest()
+                        manifest_part.load("{}/temp/master.manifest".format(release_dir))
+                        manifest.merge(manifest_part)
+                        manifest.export("{}/sysupgrade/master.manifest".format(release_dir))
 
-        print("{}/images/factory --->".format(release_dir), "{}/factory".format(release_dir))
-        shutil.copytree("{}/images/factory".format(release_dir), "{}/factory".format(release_dir), dirs_exist_ok=True)
-        shutil.copytree("{}/images/sysupgrade".format(release_dir), "{}/sysupgrade".format(release_dir), dirs_exist_ok=True)
-
-        #shutil.rmtree("{}/packages".format(release_dir))
-        #shutil.rmtree("{}/images".format(release_dir))
-
-        print("Gluon Version:" + match_the_catch.group(1))
-        print("FFSH Version:" + match_the_catch.group(2))
+                if file.startswith('images/factory/'):
+                    zip_ref.extract(file, "{}/factory".format(release_dir))
+                elif file.startswith('images/sysupgrade/'):
+                    zip_ref.extract(file, "{}/sysupgrade".format(release_dir))
+                elif file.startswith('images/other/'):
+                    zip_ref.extract(file, "{}/other".format(release_dir))
 
     def delete(self, artifact_file):
         return True
