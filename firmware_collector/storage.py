@@ -30,11 +30,11 @@ class Storage:
 
                     manifest_path = release_dir / "sysupgrade" / "master.manifest"
                     if manifest_path.exists():
-                        zip_ref.extract(file, release_dir / "temp")
+                        zip_ref.extract(file, "/tmp")
                         manifest = Manifest()
                         manifest.load(manifest_path)
                         manifest_part = Manifest()
-                        manifest_part.load(release_dir / "temp" / "master.manifest")
+                        manifest_part.load(Path("/tmp") / "master.manifest")
                         manifest.merge(manifest_part)
                         manifest.export(manifest_path)
                     else:
@@ -52,7 +52,6 @@ class Storage:
                     file.filename = Path(file.filename).name
                     if file.filename != "other":
                         zip_ref.extract(file, release_dir / "other")
-                shutil.rmtree(Path(release_dir / "temp"), ignore_errors=True)
 
     def delete(self, artifact_file):
         return True
