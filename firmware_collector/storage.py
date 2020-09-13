@@ -1,8 +1,8 @@
 #! python3
 
-import os
 import re
 import zipfile
+import shutil
 from pathlib import Path
 from firmware_collector.manifest import Manifest
 
@@ -42,13 +42,17 @@ class Storage:
 
                 if file.filename.startswith('images/factory/'):
                     file.filename = Path(file.filename).name
-                    zip_ref.extract(file, release_dir / "factory")
+                    if file.filename != "factory":
+                        zip_ref.extract(file, release_dir / "factory")
                 elif file.filename.startswith('images/sysupgrade/'):
                     file.filename = Path(file.filename).name
-                    zip_ref.extract(file, release_dir / "sysupgrade")
+                    if file.filename != "sysupgrade":
+                        zip_ref.extract(file, release_dir / "sysupgrade")
                 elif file.filename.startswith('images/other/'):
                     file.filename = Path(file.filename).name
-                    zip_ref.extract(file, release_dir / "other")
+                    if file.filename != "other":
+                        zip_ref.extract(file, release_dir / "other")
+                shutil.rmtree(Path(release_dir / "temp"), ignore_errors=True)
 
     def delete(self, artifact_file):
         return True
