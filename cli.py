@@ -2,10 +2,13 @@
 import argparse
 import json
 import os
+import re
+from pathlib import Path
 from progress.bar import Bar
 from firmware_collector.api import API
 from firmware_collector.repository import Repository
 from firmware_collector.storage import Storage
+from firmware_collector.manifest import Manifest
 
 
 class Collector():
@@ -63,6 +66,15 @@ class Collector():
             storage.save(artifact.path)
         bar.finish()
 
+    def manifest(self, version, branch):
+        version_pattern = re.compile(r'(\d{4}.\d.\d).(\d)')
+        if version_pattern.match(version) and branch is not None:
+            manifest = Manifest()
+            manifest_path = Path(self.config["firmware_path"]) / version / "sysupgrade" / "master.manifest"
+            manifest.load(manifest_path)
+            manifest.set_branch(branch)
+            manifest.export(manifest_path.parent / "{}.{}".format(branch, "manifest"))
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='This is the firmware-collector cli')
@@ -70,7 +82,8 @@ if __name__ == "__main__":
     parse_group.add_argument('--update', action="store_true", default=False)
     parse_group.add_argument('--download', action="store_true", default=False)
     parse_group.add_argument('--store', action="store_true", default=False)
-
+    parse_group.add_argument('--manifest', action="store", default=False)
+    parser.add_argument("--branch", action="store", required=False)
     args = parser.parse_args()
 
     collector = Collector("config.json")
@@ -81,3 +94,5 @@ if __name__ == "__main__":
         collector.download()
     elif args.store:
         collector.store()
+    elif args.manifest:
+        collector.manifest(args.manifest, args.branch)
