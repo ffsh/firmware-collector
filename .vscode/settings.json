@@ -1,5 +1,0 @@
-{
-    "python.pythonPath": "/home/grotax/git/firmware-collector/venv/bin/python3",
-    "python.linting.flake8Enabled": true,
-    "python.linting.enabled": true
-}

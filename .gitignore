@@ -4,6 +4,7 @@ artifact_store
 download_store
 config.json
 .vscode
+db.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
