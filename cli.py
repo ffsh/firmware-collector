@@ -25,8 +25,7 @@ class Collector():
         repository = Repository(self.config["db_path"])
         api.load_artifacts()
         for artifact_id in api.get_artifact_ids():
-            if not repository.create(api.get_artifact(artifact_id)):
-                repository.update(artifact_id, api.get_artifact(artifact_id))
+            repository.create(api.get_artifact(artifact_id))
 
     def download(self):
         """
