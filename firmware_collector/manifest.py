@@ -4,7 +4,7 @@ import re
 
 
 class Manifest():
-    def __init__(self, branch=None, date=None, priority=None, body=None, signature=None):
+    def __init__(self, branch="", date="", priority="", body="", signature=""):
         self.branch = branch
         self.date = date
         self.priority = priority
@@ -53,9 +53,17 @@ class Manifest():
         exports the manifest to a file
         """
         with open(file, "w") as export_file:
-            print("BRANCH={branch}\nDATE={date}\nPRIORITY={priority}\n\n\n{body}\n---\n{signature}".format(
-                branch=self.branch,
-                date=self.date,
-                priority=self.priority,
-                body=self.body,
-                signature=self.signature), file=export_file)
+            # the autoupdate doesn't like the space that the sign script will leave if there is a newline
+            if self.signature != "":
+                print("BRANCH={branch}\nDATE={date}\nPRIORITY={priority}\n\n\n{body}\n---\n{signature}".format(
+                    branch=self.branch,
+                    date=self.date,
+                    priority=self.priority,
+                    body=self.body,
+                    signature=self.signature), file=export_file, end='')
+            else:
+                print("BRANCH={branch}\nDATE={date}\nPRIORITY={priority}\n\n\n{body}".format(
+                    branch=self.branch,
+                    date=self.date,
+                    priority=self.priority,
+                    body=self.body), file=export_file, end='')

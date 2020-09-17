@@ -7,11 +7,11 @@ class TestArtifact(unittest.TestCase):
 
     def test_create_empty(self):
         manifest = Manifest()
-        self.assertEqual(manifest.branch, None)
-        self.assertEqual(manifest.date, None)
-        self.assertEqual(manifest.priority, None)
-        self.assertEqual(manifest.body, None)
-        self.assertEqual(manifest.signature, None)
+        self.assertEqual(manifest.branch, "")
+        self.assertEqual(manifest.date, "")
+        self.assertEqual(manifest.priority, "")
+        self.assertEqual(manifest.body, "")
+        self.assertEqual(manifest.signature, "")
 
     def test_create_data(self):
         data = {
@@ -114,6 +114,30 @@ alfa-network-ap121f 2020.1.2-242-testing a21015a1cc0c46201e09fcdb87a9b03d9ecd016
         self.assertEqual(manifest2.body, data["body"])
         self.assertEqual(manifest2.signature, data["signature"])
 
+    def test_load_no_signature(self):
+        self.maxDiff = None
+        data = {
+            "branch": "master",
+            "date": "2020-05-04 22:25:45+02:00",
+            "priority": "1",
+            "body":
+            """8devices-carambola2-board 2020.1.2-242-testing c8a7d3db620e91ad4d935bfc3df59f1a60bb3a2f11aa19a24b2f3d965cb88d06 4259844 gluon-ffsh-2020.1.2-242-testing-8devices-carambola2-board-sysupgrade.bin
+8devices-carambola2-board 2020.1.2-242-testing c8a7d3db620e91ad4d935bfc3df59f1a60bb3a2f11aa19a24b2f3d965cb88d06 gluon-ffsh-2020.1.2-242-testing-8devices-carambola2-board-sysupgrade.bin
+8devices-carambola2-board 2020.1.2-242-testing cffca7ec6dee0f4e1cb95fe79275a34cf791b92f76ba74e4d3e74c113e7eed40e5ae576c7f8da1e9cdc4dec71f14f8457111870647aafc5f41b048749d34b671 gluon-ffsh-2020.1.2-242-testing-8devices-carambola2-board-sysupgrade.bin
+alfa-network-ap121f 2020.1.2-242-testing a21015a1cc0c46201e09fcdb87a9b03d9ecd0169ff1f8cab97a7e8b39767b87e 4326145 gluon-ffsh-2020.1.2-242-testing-alfa-network-ap121f-sysupgrade.bin"""
+        }
+        manifest = Manifest(data["branch"], data["date"], data["priority"], data["body"])
+        manifest.export("no-sig.manifest")
+        with open("no-sig.manifest", "r") as manifest_file:
+            self.assertTrue(manifest_file.readlines())
+        manifest2 = Manifest()
+        manifest2.load("no-sig.manifest")
+        manifest2.export("no-sig2.manifest")
+        self.assertEqual(manifest2.branch, data["branch"])
+        self.assertEqual(manifest2.date, data["date"])
+        self.assertEqual(manifest2.priority, data["priority"])
+        self.assertEqual(manifest2.body, data["body"])
+        # self.assertEqual(manifest2.signature, data["signature"])
 
 if __name__ == '__main__':
     unittest.main()
