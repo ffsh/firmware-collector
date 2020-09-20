@@ -24,16 +24,16 @@ class Storage:
 
         with zipfile.ZipFile(artifact_file, 'r') as zip_ref:
             for file in zip_ref.infolist():
-                if file.filename.endswith("master.manifest"):
+                if file.filename.endswith("stable.manifest"):
                     file.filename = Path(file.filename).name
 
-                    manifest_path = release_dir / "sysupgrade" / "master.manifest"
+                    manifest_path = release_dir / "sysupgrade" / "stable.manifest"
                     if manifest_path.exists():
                         zip_ref.extract(file, "/tmp")
                         manifest = Manifest()
                         manifest.load(manifest_path)
                         manifest_part = Manifest()
-                        manifest_part.load(Path("/tmp") / "master.manifest")
+                        manifest_part.load(Path("/tmp") / "stable.manifest")
                         manifest.merge(manifest_part)
                         manifest.export(manifest_path)
                     else:

@@ -15,7 +15,7 @@ class TestArtifact(unittest.TestCase):
 
     def test_create_data(self):
         data = {
-            "branch": "master",
+            "branch": "stable",
             "date": "2020-05-04 22:25:45+02:00",
             "priority": "1",
             "body":
@@ -34,7 +34,7 @@ alfa-network-ap121f 2020.1.2-242-testing a21015a1cc0c46201e09fcdb87a9b03d9ecd016
 
     def test_merge(self):
         data1 = {
-            "branch": "master",
+            "branch": "stable",
             "date": "2020-05-04 22:25:45+02:00",
             "priority": "1",
             "body":
@@ -45,7 +45,7 @@ alfa-network-ap121f 2020.1.2-242-testing a21015a1cc0c46201e09fcdb87a9b03d9ecd016
             "signature": "4b93f300b95e89342b2d49dc5fe4fbf1d89028ad48e00a09ecc2af86beb6380fea1cd8aa9f9f05a740dfa18589e7223a138920b7eb0639914b473cf4f37e7b04"
         }
         data2 = {
-            "branch": "master",
+            "branch": "stable",
             "date": "2020-05-04 22:25:45+02:00",
             "priority": "1",
             "body":
@@ -72,7 +72,7 @@ d-link-dir-615-d4 2020.1.2-242-testing a682e5a1063f14dbe9c3e3b50d953dfbdb18acecb
 
     def test_export(self):
         data = {
-            "branch": "master",
+            "branch": "stable",
             "date": "2020-05-04 22:25:45+02:00",
             "priority": "1",
             "body":
@@ -83,15 +83,15 @@ alfa-network-ap121f 2020.1.2-242-testing a21015a1cc0c46201e09fcdb87a9b03d9ecd016
             "signature": "4b93f300b95e89342b2d49dc5fe4fbf1d89028ad48e00a09ecc2af86beb6380fea1cd8aa9f9f05a740dfa18589e7223a138920b7eb0639914b473cf4f37e7b04"
         }
         manifest = Manifest(data["branch"], data["date"], data["priority"], data["body"], data["signature"])
-        manifest.export("master.manifest")
-        with open("master.manifest", "r") as manifest_file:
+        manifest.export("stable.manifest")
+        with open("stable.manifest", "r") as manifest_file:
             self.assertTrue(manifest_file.readlines())
-        os.remove("master.manifest")
+        os.remove("stable.manifest")
 
     def test_load(self):
         self.maxDiff = None
         data = {
-            "branch": "master",
+            "branch": "stable",
             "date": "2020-05-04 22:25:45+02:00",
             "priority": "1",
             "body":
@@ -102,12 +102,12 @@ alfa-network-ap121f 2020.1.2-242-testing a21015a1cc0c46201e09fcdb87a9b03d9ecd016
             "signature": "4b93f300b95e89342b2d49dc5fe4fbf1d89028ad48e00a09ecc2af86beb6380fea1cd8aa9f9f05a740dfa18589e7223a138920b7eb0639914b473cf4f37e7b04"
         }
         manifest = Manifest(data["branch"], data["date"], data["priority"], data["body"], data["signature"])
-        manifest.export("master.manifest")
-        with open("master.manifest", "r") as manifest_file:
+        manifest.export("stable.manifest")
+        with open("stable.manifest", "r") as manifest_file:
             self.assertTrue(manifest_file.readlines())
         manifest2 = Manifest()
-        manifest2.load("master.manifest")
-        manifest2.export("master2.manifest")
+        manifest2.load("stable.manifest")
+        manifest2.export("stable2.manifest")
         self.assertEqual(manifest2.branch, data["branch"])
         self.assertEqual(manifest2.date, data["date"])
         self.assertEqual(manifest2.priority, data["priority"])
@@ -117,7 +117,7 @@ alfa-network-ap121f 2020.1.2-242-testing a21015a1cc0c46201e09fcdb87a9b03d9ecd016
     def test_load_no_signature(self):
         self.maxDiff = None
         data = {
-            "branch": "master",
+            "branch": "stable",
             "date": "2020-05-04 22:25:45+02:00",
             "priority": "1",
             "body":

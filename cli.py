@@ -69,7 +69,7 @@ class Collector():
         version_pattern = re.compile(r'(\d{4}.\d.\d).(\d)')
         if version_pattern.match(version) and branch is not None:
             manifest = Manifest()
-            manifest_path = Path(self.config["firmware_path"]) / version / "sysupgrade" / "master.manifest"
+            manifest_path = Path(self.config["firmware_path"]) / version / "sysupgrade" / "stable.manifest"
             manifest.load(manifest_path)
             manifest.set_branch(branch)
             manifest.export(manifest_path.parent / "{}.{}".format(branch, "manifest"))
