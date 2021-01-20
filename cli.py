@@ -14,8 +14,11 @@ from firmware_collector.manifest import Manifest
 class Collector():
     def __init__(self, config_file):
         super().__init__()
-        with open(config_file, "r") as config_file:
-            self.config = json.load(config_file)
+        try:
+            with open(config_file, "r") as config_file:
+                self.config = json.load(config_file)
+        except FileNotFoundError:
+            print("Your config.json is missing, check config.json.example")
 
     def update(self):
         """
@@ -24,8 +27,14 @@ class Collector():
         api = API(self.config["url"], self.config["username"], self.config["secret"])
         repository = Repository(self.config["db_path"])
         api.load_artifacts()
-        for artifact_id in api.get_artifact_ids():
+
+        artifact_list = api.get_artifact_ids()
+        bar = Bar('Processing', max=len(artifact_list))
+
+        for artifact_id in artifact_list:
             repository.create(api.get_artifact(artifact_id))
+            bar.next()
+        bar.finish()
 
     def download(self):
         """

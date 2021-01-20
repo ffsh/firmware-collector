@@ -49,10 +49,9 @@ class API:
 
     def get_artifact_ids(self):
         """
-        returns all artifacts, generator
+        returns all artifacts
         """
-        for artifact in self.artifacts:
-            yield artifact.id
+        return [artifact.id for artifact in self.artifacts]
 
     def get_artifact(self, id):
         for artifact in self.artifacts:
