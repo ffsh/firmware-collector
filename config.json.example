@@ -1,0 +1,8 @@
+{
+    "url": "https://api.github.com/repos/{Org/User}/{repo}/actions/artifacts",
+    "username": "YourUser",
+    "secret": "YourSecret",
+    "db_path": "db.json",
+    "download_path": "path to store downloaded zips",
+    "firmware_path": "path for unpacked images"
+}
