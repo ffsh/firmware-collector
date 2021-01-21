@@ -94,13 +94,17 @@ if __name__ == "__main__":
     parser.add_argument("--branch", action="store", required=False)
     args = parser.parse_args()
 
-    collector = Collector("config.json")
-
-    if args.update:
-        collector.update()
-    elif args.download:
-        collector.download()
-    elif args.store:
-        collector.store()
-    elif args.manifest:
-        collector.manifest(args.manifest, args.branch)
+    try:
+        collector = Collector("config.json")
+        if args.update:
+            collector.update()
+        elif args.download:
+            collector.download()
+        elif args.store:
+            collector.store()
+        elif args.manifest:
+            collector.manifest(args.manifest, args.branch)
+    except ModuleNotFoundError as module_error:
+        print("Did you forget to activate the virtual-env?")
+        print("Error: {}".format(module_error))
+        print("Maybe run: . venv/bin/activate")
