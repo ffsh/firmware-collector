@@ -36,7 +36,14 @@ class Collector():
             bar.next()
         bar.finish()
 
-    def download(self):
+    def __match(self, artifact, version):
+        """
+        checks if this file should be downloaded
+        """
+        if not artifact.stored and artifact.name.endswith("output") and version in artifact.name:
+            return True
+
+    def download(self, version):
         """
         downloads all the artifacts, that are not yet downloaded"
         """
@@ -46,7 +53,7 @@ class Collector():
         download_list = []
         for a_id in repository.read_all_id():
             artifact = repository.read(a_id)
-            if not artifact.stored and artifact.name.endswith("output"):
+            if self.__match(artifact, version):
                 download_list.append(artifact)
 
         bar = Bar('Processing', max=len(download_list))
@@ -88,7 +95,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='This is the firmware-collector cli')
     parse_group = parser.add_mutually_exclusive_group()
     parse_group.add_argument('--update', action="store_true", default=False)
-    parse_group.add_argument('--download', action="store_true", default=False)
+    parse_group.add_argument('--download', action="store", default=False)
     parse_group.add_argument('--store', action="store_true", default=False)
     parse_group.add_argument('--manifest', action="store", default=False)
     parser.add_argument("--branch", action="store", required=False)
@@ -99,7 +106,10 @@ if __name__ == "__main__":
         if args.update:
             collector.update()
         elif args.download:
-            collector.download()
+            if args.download == "":
+                print("Please provide a version.")
+            else:
+                collector.download(args.download)
         elif args.store:
             collector.store()
         elif args.manifest:
