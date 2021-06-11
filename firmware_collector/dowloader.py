@@ -9,7 +9,6 @@ class Downloader:
     def __init__(self, config):
         super().__init__()
         self.config = config
-        self.progress = None
 
     def __match(self, artifact, version):
         """
@@ -21,7 +20,6 @@ class Downloader:
     def dowload_helper(self, api, artifact):
         try:
             api.download_artifact(artifact, self.config["download_path"])
-            artifact.stored = True
         except Exception as exception:
             print("Download failed {}".format(exception))
 
@@ -39,13 +37,13 @@ class Downloader:
             artifact = repository.read(a_id)
             if self.__match(artifact, version):
                 download_list.append(artifact)
+        print("Starting download of {} files".format(len(download_list))
 
-        self.progress = Bar('Dowloading', max=len(download_list))
         for artifact in download_list:
-            pool.apply_async(self.dowload_helper, args=(api, artifact), callback=self.progress.next())
+            pool.apply_async(self.dowload_helper, args=(api, artifact))
+            artifact.stored = True
         pool.close()
         pool.join()
-        self.progress.finish()
 
         for artifact in download_list:
             if artifact.stored:
