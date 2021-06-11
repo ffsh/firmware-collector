@@ -8,6 +8,7 @@ from firmware_collector.api import API
 from firmware_collector.repository import Repository
 from firmware_collector.storage import Storage
 from firmware_collector.manifest import Manifest
+from firmware_collector.dowloader import Downloader
 
 
 class Collector():
@@ -40,36 +41,12 @@ class Collector():
             bar.next()
         bar.finish()
 
-    def __match(self, artifact, version):
-        """
-        checks if this file should be downloaded
-        """
-        if not artifact.stored and artifact.name.endswith("output") and version in artifact.name:
-            return True
-
     def download(self, version):
         """
-        downloads all the artifacts, that are not yet downloaded"
+        download all files
         """
-        api = API(self.config["url"], self.config["username"], self.config["secret"])
-        repository = Repository(Path(self.config["db_path"]) / "repo.db")
-
-        download_list = []
-        for a_id in repository.read_all_id():
-            artifact = repository.read(a_id)
-            if self.__match(artifact, version):
-                download_list.append(artifact)
-
-        bar = Bar('Processing', max=len(download_list))
-        for artifact in download_list:
-            bar.next()
-            try:
-                api.download_artifact(artifact, self.config["download_path"])
-                artifact.stored = True
-                repository.update(artifact.id, artifact)
-            except Exception as exception:
-                print("Download failed {}".format(exception))
-        bar.finish()
+        downloader = Downloader(self.config)
+        downloader.download(version)
 
     def store(self):
         """
