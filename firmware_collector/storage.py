@@ -14,7 +14,7 @@ class Storage:
 
     def save(self, artifact_file):
         filename = Path(artifact_file).name
-        filename_parsed = re.match(r'(\d{4}.\d.\d).(\d)_(.*)+_(\w+).zip', filename)
+        filename_parsed = re.match(r'(\d{4}.\d.\d).(\d)(-[a-z]+\d)?_(.*)+_(\w+).zip', filename)
 
         release_name = "{}.{}".format(filename_parsed.group(1), filename_parsed.group(2))
         release_dir = self.storage_path / (release_name)
