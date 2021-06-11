@@ -9,7 +9,7 @@ from firmware_collector.api import API
 from firmware_collector.repository import Repository
 from firmware_collector.storage import Storage
 from firmware_collector.manifest import Manifest
-from firmware_collector.dowloader import Downloader
+from firmware_collector.downloader import Downloader
 
 
 class Collector():
