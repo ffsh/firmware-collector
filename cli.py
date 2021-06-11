@@ -11,6 +11,8 @@ from firmware_collector.storage import Storage
 from firmware_collector.manifest import Manifest
 from firmware_collector.downloader import Downloader
 
+# downloader
+
 
 class Collector():
     def __init__(self, config_file):

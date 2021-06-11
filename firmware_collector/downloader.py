@@ -1,10 +1,12 @@
 from firmware_collector.api import API
 from firmware_collector.repository import Repository
-from progress.bar import Bar
 import multiprocessing as mp
 
 
 class Downloader:
+    """
+    Manages the dowloads with mp
+    """
 
     def __init__(self, config):
         super().__init__()
@@ -37,11 +39,12 @@ class Downloader:
             artifact = repository.read(a_id)
             if self.__match(artifact, version):
                 download_list.append(artifact)
-        print("Starting download of {} files".format(len(download_list))
+        print("Starting download of {} files".format(len(download_list)))
 
         for artifact in download_list:
             pool.apply_async(self.dowload_helper, args=(api, artifact))
             artifact.stored = True
+
         pool.close()
         pool.join()
 
