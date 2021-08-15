@@ -24,6 +24,11 @@ class Collector():
             self.config["firmware_path"] = "/tmp/ffsh/firmware_store"
         except KeyError as e:
             print("You are missing a environment variable {}".format(e))
+        try:
+            Path(self.config["download_path"]).mkdir(parents=True, exist_ok=True)
+            Path(self.config["firmware_path"]).mkdir(parents=True, exist_ok=True)
+        except Exception as e:
+            print("Something went wrong with the path:\n{}".format(e))
 
     def update(self):
         """
