@@ -35,7 +35,8 @@ class Collector():
         updates the entries in the DB
         """
         api = API(self.config["url"], self.config["username"], self.config["secret"])
-        repository = Repository(Path(self.config["db_path"]) / "repo.db")
+        db_path = Path(self.config["db_path"]) / "repo.db"
+        repository = Repository(db_path)
         api.load_artifacts()
 
         artifact_list = api.get_artifact_ids()
