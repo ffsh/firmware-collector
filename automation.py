@@ -36,6 +36,7 @@ class Collector():
         """
         api = API(self.config["url"], self.config["username"], self.config["secret"])
         db_path = Path(self.config["db_path"]) / "repo.db"
+        print(db_path)
         repository = Repository(db_path)
         api.load_artifacts()
 
