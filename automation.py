@@ -25,19 +25,20 @@ class Collector():
         except KeyError as e:
             print("You are missing a environment variable {}".format(e))
         try:
+            # Create directories
             Path(self.config["download_path"]).mkdir(parents=True, exist_ok=True)
             Path(self.config["firmware_path"]).mkdir(parents=True, exist_ok=True)
+            Path(self.config["db_path"]).mkdir(parents=True, exist_ok=True)
         except Exception as e:
             print("Something went wrong with the path:\n{}".format(e))
+        self.config["db_path"] = self.config["db_path"] + "/repo.json"
 
     def update(self):
         """
         updates the entries in the DB
         """
         api = API(self.config["url"], self.config["username"], self.config["secret"])
-        db_path = Path(self.config["db_path"]) / "repo.db"
-        print(db_path)
-        repository = Repository(db_path)
+        repository = Repository(self.config["db_path"])
         api.load_artifacts()
 
         artifact_list = api.get_artifact_ids()
@@ -78,12 +79,6 @@ class Collector():
             manifest.set_branch(branch)
             manifest.export(manifest_path.parent / "{}.{}".format(branch, "manifest"))
 
-    def create_stores(self):
-        Path(self.config["db_path"]).mkdir(parents=True, exist_ok=True)
-        Path(self.config["download_path"]).mkdir(parents=True, exist_ok=True)
-        Path(self.config["firmware_path"]).mkdir(parents=True, exist_ok=True)
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='This is the firmware-collector automation interface')
     parse_group = parser.add_mutually_exclusive_group()
@@ -96,10 +91,6 @@ if __name__ == "__main__":
 
     try:
         collector = Collector()
-        try:
-            collector.create_stores()
-        except Exception as e:
-            print("Can't create directories {}".format(e))
         if args.update:
             collector.update()
         elif args.download:
