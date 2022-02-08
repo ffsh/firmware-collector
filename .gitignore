@@ -2,6 +2,7 @@ secret
 secrets
 artifact_store
 download_store
+database_store
 config.json
 .vscode
 db.json
