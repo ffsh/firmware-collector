@@ -16,7 +16,10 @@ class Storage:
         filename = Path(artifact_file).name
         filename_parsed = re.match(r'(\d{4}.\d.\d).(\d+)(-[a-z]+\d)?_(.*)+_(\w+).zip', filename)
 
-        release_name = "{}.{}".format(filename_parsed.group(1), filename_parsed.group(2))
+        if filename_parsed.group(3) is not None:
+            release_name = "{}.{}{}".format(filename_parsed.group(1), filename_parsed.group(2), filename_parsed.group(3))
+        else:
+            release_name = "{}.{}".format(filename_parsed.group(1), filename_parsed.group(2))
         release_dir = self.storage_path / (release_name)
 
         if not release_dir.exists():
