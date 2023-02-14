@@ -3,6 +3,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from firmware_collector.artifact import Artifact
 import os
+import sys
 
 
 class API:
@@ -46,6 +47,7 @@ class API:
                 # can't load more artifacts api denied
                 print("API returned {}".format(r.status_code))
                 self.artifacts = result
+                sys.exit(1)
 
     def get_artifact_ids(self):
         """
