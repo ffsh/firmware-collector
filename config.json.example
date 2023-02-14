@@ -1,7 +1,7 @@
 {
     "url": "https://api.github.com/repos/{Org/User}/{repo}/actions/artifacts",
-    "username": "YourUser",
-    "secret": "YourSecret",
+    "username": "GitHubUser",
+    "secret": "GitHub PAT, your token here, needs repo scope",
     "db_path": "db.json",
     "download_path": "path to store downloaded zips",
     "firmware_path": "path for unpacked images"
